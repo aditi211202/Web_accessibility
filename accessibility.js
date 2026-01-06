@@ -9,7 +9,7 @@
             "a11y-contrast-yellow"
         ],
         contrastIndex: 0,
-        baseFontSize: 100,   // 👈 original (equal point)
+        baseFontSize: 100,   
         fontSize: 100,
         speaking: false,
         utterance: null,
@@ -23,7 +23,7 @@
                 // IMPORTANT: warm up speech engine
                 speechSynthesis.getVoices();
 
-                console.log("♿ AccessibilityKit ready");
+                console.log(" AccessibilityKit ready");
             });
 
             // restore contrast mode
@@ -53,7 +53,7 @@
                 if (!btn) return;
 
                 const action = btn.getAttribute("data-action");
-                console.log("A11Y button clicked:", action); // 🔍 DEBUG
+                console.log("A11Y button clicked:", action); 
 
                 switch (action) {
                     case "font-plus":
@@ -148,10 +148,10 @@
 
             this.utterance = new SpeechSynthesisUtterance(text);
 
-            // ✅ ONLY set language (safe)
+            //  ONLY set language (safe)
             this.utterance.lang = this.currentLang;
 
-            // ❌ DO NOT force voice (browser chooses best)
+            //  DO NOT force voice (browser chooses best)
             // this.utterance.voice = ...
 
             this.utterance.rate = 0.7;
@@ -166,12 +166,7 @@
         },
 
         getPageText() {
-            // const clone = document.body.cloneNode(true);
-            // clone.querySelectorAll("script, style, #a11y-toolbar")
-            //     .forEach(el => el.remove());
-
-            // return clone.innerText.trim().slice(0, 12000);
-            // 🎯 BEST: sirf main content read ho
+            
             const main =
                 document.querySelector("main") ||
                 document.querySelector("#main-content") ||
