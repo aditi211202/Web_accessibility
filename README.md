@@ -25,4 +25,5 @@ WCAG-friendly foundation.
 Add this line before `</body>` of your website:
 
 ```html
-<script src="https://aditi211202.github.io/Web_accessibility/accessibility.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/aditi211202/Web_accessibility/accessibility.js"></script>
+
