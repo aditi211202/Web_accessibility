@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>EAV Data Entry (Separate Forms)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-light p-4">
+
+    <div id="a11y-toolbar">
+        <button data-action="font-plus">A+</button>
+        <button data-action="font-reset">A=</button>
+        <button data-action="font-minus">A-</button>
+        <!-- contrast -->
+        <button data-action="contrast">A</button>
+        <button data-action="speech">🔊 Read</button>
+        <!-- <button data-action="lang">HI / EN</button> -->
+
+    </div>
+
+    <a href="tel:+919630057714">Call Test</a><br><br>
+    <a href="mailto:support@eternalresearch.in">Mail Test</a>
+
+    <div class="container">
+
+        <h2 class="mb-4">EAV Data Entry Panel</h2>
+
+        <!-- ========== ENTITY FORM ========== -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">1️⃣ Create Entity</div>
+            <div class="card-body">
+                <form id="entityForm">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Entity Id</label>
+                            <input type="number" id="entity_id" class="form-control" placeholder="...." required>
+                            <!-- <select id="entityType" class="form-select" required>
+                                <option value="">Select Type</option>
+                                <option value="source_report">Source Report</option>
+                                <option value="monthly_report">Monthly Report</option>
+                                <option value="yearly_report">Yearly Report</option>
+                            </select> -->
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Entity Name</label>
+                            <input type="text" id="entityName" class="form-control" placeholder="e.g. October 2025"
+                                required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Entity</button>
+                </form>
+                <div id="entityResult" class="alert mt-3 d-none"></div>
+            </div>
+        </div>
+
+        <!-- ========== ATTRIBUTE FORM ========== -->
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">2️⃣ Create Attribute</div>
+            <div class="card-body">
+                <form id="attributeForm">
+                    <div id="attributeContainer">
+                        <div class="row mb-3 attribute-row">
+                            <div class="col-md-5">
+                                <label class="form-label">Attribute Name</label>
+                                <input type="text" class="form-control attributeName" placeholder="e.g. Received"
+                                    required>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label">Data Type</label>
+                                <select class="form-select dataType" required>
+                                    <option value="string">String</option>
+                                    <option value="integer">Integer</option>
+                                    <option value="decimal">Decimal</option>
+                                    <option value="text">Text</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="button" class="btn btn-danger removeAttr w-100">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" id="addAttribute" class="btn btn-secondary mb-3">+ Add Attribute</button>
+                    <br>
+                    <button type="submit" class="btn btn-success">Create Attribute(s)</button>
+                </form>
+
+                <div id="attributeResult" class="alert mt-3 d-none"></div>
+            </div>
+        </div>
+
+
+        <!-- ========== VALUE FORM ========== -->
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">3️⃣ Create Value</div>
+            <div class="card-body">
+                <form id="valueForm">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Entity ID</label>
+                            <input type="number" id="entityId" class="form-control" placeholder="e.g. 1" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Attribute ID</label>
+                            <input type="number" id="attributeId" class="form-control" placeholder="e.g. 2" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">ValueType</label>
+                            <select id="valueType" class="form-select" required>
+                                <option value="string">String</option>
+                                <option value="integer">Integer</option>
+                                <option value="decimal">Decimal</option>
+                                <option value="text">Text</option>
+                                <option value="boolean">boolean</option>
+                                <option value="json">JSON</option>
+
+                            </select>
+                            <!-- <input type="text" id="valueText" class="form-control" placeholder="e.g. 00" required> -->
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Value</label>
+                            <input type="text" id="valueText" class="form-control" placeholder="e.g. 00" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-warning">Create Value</button>
+                </form>
+                <div id="valueResult" class="alert mt-3 d-none"></div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="accessibility.js" defer></script>
+    <!-- <script>
+        AccessibilityKit.init();
+    </script> -->
+    <script>
+
+        AccessibilityKit.init();
+        // ENTITY FORM
+        document.getElementById("entityForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const entity_id = document.getElementById("entity_id").value;
+            const entityTypeName = document.getElementById("entityName").value;
+            const resultBox = document.getElementById("entityResult");
+
+            try {
+                const res = await fetch('https://viewter.varone.in/odata/VarEntities', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ entityTypeId: entity_id, entityTypeName: entityTypeName })
+                });
+                const data = await res.json();
+                resultBox.className = "alert alert-success mt-3";
+                resultBox.textContent = `✅ Entity created successfully (ID: ${data.id || 'N/A'})`;
+                resultBox.classList.remove("d-none");
+            } catch (err) {
+                resultBox.className = "alert alert-danger mt-3";
+                resultBox.textContent = "❌ Failed to create entity.";
+                resultBox.classList.remove("d-none");
+            }
+        });
+
+        // ATTRIBUTE FORM
+        // Add new attribute row
+        document.getElementById("addAttribute").addEventListener("click", () => {
+            const container = document.getElementById("attributeContainer");
+            const newRow = document.createElement("div");
+            newRow.classList.add("row", "mb-3", "attribute-row");
+            newRow.innerHTML = `
+                <div class="col-md-5">
+                <label class="form-label">Attribute Name</label>
+                <input type="text" class="form-control attributeName" placeholder="e.g. Received" required>
+                </div>
+                <div class="col-md-5">
+                <label class="form-label">Data Type</label>
+                <select class="form-select dataType" required>
+                    <option value="string">String</option>
+                    <option value="integer">Integer</option>
+                    <option value="decimal">Decimal</option>
+                    <option value="text">Text</option>
+                </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-danger removeAttr w-100">Remove</button>
+                </div>
+            `;
+            container.appendChild(newRow);
+        });
+
+        // Remove attribute row
+        document.addEventListener("click", (e) => {
+            if (e.target.classList.contains("removeAttr")) {
+                e.target.closest(".attribute-row").remove();
+            }
+        });
+
+        // Submit all attributes
+        document.getElementById("attributeForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const resultBox = document.getElementById("attributeResult");
+            const rows = document.querySelectorAll(".attribute-row");
+
+            let successCount = 0;
+            let failCount = 0;
+
+            for (const row of rows) {
+                const name = row.querySelector(".attributeName").value.trim();
+                const dataType = row.querySelector(".dataType").value;
+
+                if (!name) continue;
+
+                try {
+                    const res = await fetch("https://viewter.varone.in/odata/VarAttributes", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ name, dataType }),
+                    });
+
+                    if (res.ok) {
+                        successCount++;
+                    } else {
+                        failCount++;
+                    }
+                } catch (err) {
+                    failCount++;
+                }
+            }
+
+            resultBox.classList.remove("d-none");
+            if (failCount === 0) {
+                resultBox.className = "alert alert-success mt-3";
+                resultBox.textContent = `✅ ${successCount} attribute(s) created successfully!`;
+            } else {
+                resultBox.className = "alert alert-warning mt-3";
+                resultBox.textContent = `⚠️ ${successCount} created, ${failCount} failed.`;
+            }
+        });
+
+        // document.getElementById("attributeForm").addEventListener("submit", async (e) => {
+        //     e.preventDefault();
+        //     const attrName = document.getElementById("attributeName").value;
+        //     const dataType = document.getElementById("dataType").value;
+        //     const resultBox = document.getElementById("attributeResult");
+
+        //     try {
+        //         const res = await fetch('https://viewter.varone.in/odata/VarAttributes', {
+        //             method: "POST",
+        //             headers: { "Content-Type": "application/json" },
+        //             body: JSON.stringify({ name: attrName, dataType: dataType })
+        //         });
+        //         const data = await res.json();
+        //         resultBox.className = "alert alert-success mt-3";
+        //         resultBox.textContent = `✅ Attribute created successfully (ID: ${data.id || 'N/A'})`;
+        //         resultBox.classList.remove("d-none");
+        //     } catch (err) {
+        //         resultBox.className = "alert alert-danger mt-3";
+        //         resultBox.textContent = "❌ Failed to create attribute.";
+        //         resultBox.classList.remove("d-none");
+        //     }
+        // });
+
+        // VALUE FORM
+        document.getElementById("valueForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const entityId = document.getElementById("entityId").value;
+            const attributeId = document.getElementById("attributeId").value;
+            const valueText = document.getElementById("valueText").value;
+            const resultBox = document.getElementById("valueResult");
+            const valueType = document.getElementById("valueType");
+
+            try {
+                const res = await fetch('https://viewter.varone.in/odata/VarValues', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        entity_id: entityId,
+                        attribute_id: attributeId,
+                        value_text: valueText
+                    })
+                });
+                const data = await res.json();
+                resultBox.className = "alert alert-success mt-3";
+                resultBox.textContent = `✅ Value created successfully (ID: ${data.id || 'N/A'})`;
+                resultBox.classList.remove("d-none");
+            } catch (err) {
+                resultBox.className = "alert alert-danger mt-3";
+                resultBox.textContent = "❌ Failed to create value.";
+                resultBox.classList.remove("d-none");
+            }
+        });
+    </script>
+</body>
+
+</html>

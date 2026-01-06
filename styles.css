@@ -1,0 +1,296 @@
+/* #a11y-toolbar {
+    position: fixed;
+    right: 20px;
+    top: 40%;
+    background: #000;
+    padding: 8px;
+    border-radius: 6px;
+    z-index: 99999;
+}
+
+#a11y-toolbar button {
+    display: block;
+    width: 100%;
+    margin: 6px 0;
+    background: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    cursor: pointer;
+    font-size: 14px;
+} */
+
+/* #a11y-toolbar button:focus {
+    outline: 2px solid yellow;
+} */
+
+
+/* ===============================
+   A11Y TOOLBAR
+================================ */
+
+#a11y-toolbar {
+    position: fixed;
+    top: 5%;
+    right: 16px;
+    transform: translateY(-50%);
+    display: flex;
+    /* flex-direction: column; */
+    gap: 10px;
+    padding: 3px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+}
+
+/* ===============================
+   BUTTON STYLING
+================================ */
+
+#a11y-toolbar button {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    color: #111827;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover */
+#a11y-toolbar button:hover {
+    background: #111827;
+    color: #ffffff;
+    border-color: #111827;
+    transform: translateY(-2px);
+}
+
+/* Active */
+#a11y-toolbar button:active {
+    transform: scale(0.96);
+}
+
+/* Focus (Accessibility) */
+#a11y-toolbar button:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+
+/* ===============================
+   SPECIAL BUTTON TYPES
+================================ */
+
+/* Contrast Button */
+/* #a11y-toolbar button[data-action="contrast"] {
+    font-size: 14px;
+    
+} */
+
+/* Speech Button */
+#a11y-toolbar button[data-action="speech"] {
+    font-size: 14px;
+}
+
+/* ===============================
+   ACTIVE STATE (JS TOGGLE)
+================================ */
+
+#a11y-toolbar button.active {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+}
+
+/* ===============================
+   MOBILE VIEW
+================================ */
+
+@media (max-width: 768px) {
+    #a11y-toolbar {
+        right: 10px;
+        padding: 8px;
+    }
+
+    #a11y-toolbar button {
+        width: 42px;
+        height: 42px;
+        font-size: 14px;
+    }
+}
+
+/* contrast-mode */
+/* ======================
+   A11Y HIGH CONTRAST
+====================== */
+
+.a11y-contrast {
+    background: #000 !important;
+    color: #fff !important;
+}
+
+.a11y-contrast a {
+    color: #00ffff !important;
+}
+
+.a11y-contrast button,
+.a11y-contrast input,
+.a11y-contrast select,
+.a11y-contrast textarea {
+    background: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+.a11y-contrast img {
+    filter: grayscale(100%) contrast(120%);
+}
+
+
+/* =================================================
+   COMMON – protect toolbar from contrast overrides
+================================================== */
+
+.a11y-contrast #a11y-toolbar,
+.a11y-contrast-blue #a11y-toolbar,
+.a11y-contrast-yellow #a11y-toolbar {
+    background: #ffffff !important;
+    color: #111 !important;
+}
+
+.a11y-contrast #a11y-toolbar button,
+.a11y-contrast-blue #a11y-toolbar button,
+.a11y-contrast-yellow #a11y-toolbar button {
+    background: #f9fafb !important;
+    color: #111 !important;
+    border: 1px solid #d1d5db !important;
+}
+
+/* =================================================
+   MODE 1 – BLACK / WHITE (DEFAULT HIGH CONTRAST)
+================================================== */
+
+.a11y-contrast {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+.a11y-contrast p,
+.a11y-contrast span,
+.a11y-contrast li,
+.a11y-contrast label,
+.a11y-contrast h1,
+.a11y-contrast h2,
+.a11y-contrast h3,
+.a11y-contrast h4,
+.a11y-contrast h5,
+.a11y-contrast h6 {
+    color: #fff !important;
+}
+
+.a11y-contrast a {
+    color: #00ffff !important;
+    text-decoration: underline;
+}
+
+.a11y-contrast button,
+.a11y-contrast input,
+.a11y-contrast select,
+.a11y-contrast textarea {
+    background: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+.a11y-contrast button:hover {
+    background: #fff !important;
+    color: #000 !important;
+}
+
+/* =================================================
+   MODE 2 – BLUE / YELLOW (LOW VISION FRIENDLY)
+================================================== */
+
+.a11y-contrast-blue {
+    background: #daebff !important;
+    color: #000 !important;
+}
+
+.a11y-contrast-blue p,
+.a11y-contrast-blue span,
+.a11y-contrast-blue li,
+.a11y-contrast-blue label,
+.a11y-contrast-blue h1,
+.a11y-contrast-blue h2,
+.a11y-contrast-blue h3 {
+    color: #000 !important;
+}
+
+.a11y-contrast-blue a {
+    color: #00e5ff !important;
+    text-decoration: underline;
+}
+
+.a11y-contrast-blue button,
+.a11y-contrast-blue input,
+.a11y-contrast-blue select,
+.a11y-contrast-blue textarea {
+    background: #daebff !important;
+    color: #000 !important;
+    border: 2px solid #ffd700 !important;
+}
+
+/* =================================================
+   MODE 3 – YELLOW / BLACK (MAXIMUM VISIBILITY)
+================================================== */
+
+.a11y-contrast-yellow {
+    background: #FFA667 !important;
+    color: #000 !important;
+}
+
+.a11y-contrast-yellow p,
+.a11y-contrast-yellow span,
+.a11y-contrast-yellow li,
+.a11y-contrast-yellow label,
+.a11y-contrast-yellow h1,
+.a11y-contrast-yellow h2,
+.a11y-contrast-yellow h3 {
+    color: #000 !important;
+}
+
+.a11y-contrast-yellow a {
+    color: #0000ee !important;
+    text-decoration: underline;
+}
+
+.a11y-contrast-yellow button,
+.a11y-contrast-yellow input,
+.a11y-contrast-yellow select,
+.a11y-contrast-yellow textarea {
+    /* background: #ffff00 !important; */
+    color: #000 !important;
+    /* border: 2px solid #000 !important; */
+}
+
+/* =================================================
+   IMAGES + FOCUS (ALL MODES)
+================================================== */
+
+.a11y-contrast img,
+.a11y-contrast-blue img,
+.a11y-contrast-yellow img {
+    filter: grayscale(100%) contrast(130%);
+}
+
+.a11y-contrast :focus-visible,
+.a11y-contrast-blue :focus-visible,
+.a11y-contrast-yellow :focus-visible {
+    outline: 3px solid #00ffff;
+    outline-offset: 3px;
+}
